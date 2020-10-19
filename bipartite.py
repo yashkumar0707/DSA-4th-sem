@@ -1,9 +1,10 @@
 from collections import deque
-G=[]
+G = [] 
+
 file=open('input.txt','r')
 for line in file:
 	line=line.strip()
-	adjacentVertices=[]
+	adjacentVertices = []
 	first=True
 	for node in line.split(' '):
 		if first:
@@ -11,39 +12,59 @@ for line in file:
 			continue
 		adjacentVertices.append(int(node))
 	G.append(adjacentVertices)
+
 file.close()
-print(G)		
-visited=[]
-red=[]
-blue=[]
-queue=deque()
-s=int(input('Enter source vertex'))
-red.append(s)
+
+print(G)
+
+visited = []
+red = []
+blue = []
+queue = deque()
+s=int(input("enter source"))
 queue.append([s,0])
+red.append(s)
 visited.append(s)
 while queue:
-	p=queue.popleft()
-	print(p[0],p[1])
-	dis=p[1]+1
-	for j in range(len(G[p[0]])):
-		if p[0] in red and G[p[0]][j] in red:
-			print("NOT BIPARTITE")
+	p = queue.popleft()
+	curr = p[0]
+	dis = p[1]
+	print(curr,dis)
+	dis = dis + 1
+	for j in range(len(G[curr])):
+		if curr in red and G[curr][j] in red:
+			print("Condition 1")
+			print("red : ",red)
+			print("blue : ",blue)
+			print("Not Bipartite")
 			exit()
-		if p[0] in blue and G[p[0]][j] in blue:
-			print("NOT BIPARTITE")
+		elif curr in blue and G[curr][j] in blue:
+			print("Condition 2")
+			print("red : ",red)
+			print("blue : ",blue)
+			print("Not Bipartite")
 			exit()
-		if G[p[0]][j] not in visited:
-			queue.append([G[p[0]][j],dis])
-			visited.append(G[p[0]][j])
-			if p[0] in red :
-				if G[p[0]][j] in blue:
+		elif G[curr][j] not in visited:
+			queue.append([G[curr][j],dis])
+			visited.append(G[curr][j])
+			if curr in red:
+				print("Condition 3")
+				if G[curr][j] in blue:
 					continue
-				else:	
-					blue.append(G[p[0]][j])
-			elif p[0] in blue:
-				if G[p[0]][j] in red:
+				else:
+					blue.append(G[curr][j])
+			elif curr in blue:
+				print("Condition 4")
+				if G[curr][j] in red:
 					continue
-				else:	
-					red.append(G[p[0]][j])
+				else:
+					red.append(G[curr][j])
 
-print(" Bi partite")				
+
+
+
+
+print("red : ",red)
+print("blue : ",blue)
+
+print("Bipartite")
